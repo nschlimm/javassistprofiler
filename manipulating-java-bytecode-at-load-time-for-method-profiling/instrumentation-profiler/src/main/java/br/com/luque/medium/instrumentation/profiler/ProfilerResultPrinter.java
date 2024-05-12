@@ -1,9 +1,7 @@
 package br.com.luque.medium.instrumentation.profiler;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class ProfilerResultPrinter {
     private final Collection<Clazz> classes;

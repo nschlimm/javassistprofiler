@@ -1,6 +1,10 @@
 package br.com.luque.medium.instrumentation.profiler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 public class Method {
     private String name;

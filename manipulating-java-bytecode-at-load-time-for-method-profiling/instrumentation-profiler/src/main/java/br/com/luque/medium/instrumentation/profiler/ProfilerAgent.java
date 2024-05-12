@@ -1,7 +1,5 @@
 package br.com.luque.medium.instrumentation.profiler;
 
-import javassist.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
@@ -11,6 +9,15 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtBehavior;
+import javassist.CtClass;
+import javassist.CtConstructor;
+import javassist.CtMethod;
+import javassist.Modifier;
+import javassist.NotFoundException;
 
 public class ProfilerAgent {
     private static final Logger logger = Logger.getLogger(ProfilerAgent.class.getName());
@@ -46,14 +53,14 @@ public class ProfilerAgent {
                     for (CtConstructor method : ctClass.getDeclaredConstructors()) {
                         String arguments = getMethodArguments(method);
                         String executionId = UUID.randomUUID().toString();
-                        method.insertAfter("{br.com.luque.medium.instrumentation.profiler.CallLog.INSTANCE.trackStart(\"%s\",%s);}".formatted(executionId, arguments));
+                        method.insertBefore("{br.com.luque.medium.instrumentation.profiler.CallLog.INSTANCE.trackStart(\"%s\",%s);}".formatted(executionId, arguments));
                         method.insertAfter("{br.com.luque.medium.instrumentation.profiler.CallLog.INSTANCE.trackEnd(\"%s\",String.valueOf(System.identityHashCode(this)));}".formatted(executionId));
                     }
 
                     for (CtMethod method : ctClass.getDeclaredMethods()) {
                         String arguments = getMethodArguments(method);
                         String executionId = UUID.randomUUID().toString();
-                        method.insertAfter("{br.com.luque.medium.instrumentation.profiler.CallLog.INSTANCE.trackStart(\"%s\",%s);}".formatted(executionId, arguments));
+                        method.insertBefore("{br.com.luque.medium.instrumentation.profiler.CallLog.INSTANCE.trackStart(\"%s\",%s);}".formatted(executionId, arguments));
                         method.insertAfter("{br.com.luque.medium.instrumentation.profiler.CallLog.INSTANCE.trackEnd(\"%s\",\"%s\");}".formatted(executionId, Modifier.isStatic(method.getModifiers()) ? "" : "String.valueOf(System.identityHashCode(this))"));
                     }
 

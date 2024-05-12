@@ -1,7 +1,5 @@
 package br.com.luque.medium.instrumentation.profiler;
 
-import java.util.Objects;
-
 public class MethodCall {
 
     private long threadId;
