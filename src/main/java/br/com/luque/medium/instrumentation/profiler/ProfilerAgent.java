@@ -24,6 +24,7 @@ public class ProfilerAgent {
     public static boolean shutdownAdded = false;
 
     public static void premain(String agentArgs, Instrumentation inst) {
+        System.out.println("Profiling agent scheduled! " + ProfilerAgent.class.getName());
         assert(CallLog.INSTANCE != null);
         inst.addTransformer(new ClassFileTransformer() {
             @Override
